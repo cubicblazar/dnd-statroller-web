@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+<title>DND Stat Roller</title>
+<link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" />
+<script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script>
+<style>
+
+h1 {
+  font-family: verdana;
+  text-align: center;
+}
+
+p {
+  font-family: verdana;
+  font-size: 15px;
+  text-align: center;
+}
+div {
+  font-family: verdana;
+  font-size: 15px;
+  text-align: center;
+}
+button {
+  height: 34px;
+  margin: 0 auto;
+  display: block;
+}
+</style>
+</head>
+<body>
+<h1>DND Stat Roller</h1>
+<p>A web GUI for a Python script I made to roll DnD stats for you. Uses PyScript.</p>
+<div>
+<button id="roll-button">Roll the stats</button>
+</div>
+<div id="statlist"></div>
+<p>Stat modifiers:</p>
+<div id="modlist"></div>
+<py-script>
+	from pyscript import web, when
+	from random import randint
+	from itertools import repeat
+	dicelist = []
+	statlist = []
+	modlist = []
+	stat = 0
+	# This function calculates one stat
+	def roll_individual_stat():
+		# Rolls a 1d6 4 times
+		for i in repeat(None, 4):
+			dicelist.append(randint(1,6))
+		dicelist.sort()
+		dicelist.pop(0)
+		stat = sum(dicelist)
+		statlist.append(stat)
+		stat = 0
+		dicelist.clear()
+		# Calculates ability scores for one stat (is fixed now)
+	def calculate_stat_mod(stat):
+		mod = round(((stat - 10)/2))
+		if stat == 3:
+			mod = mod + 1
+		elif stat == 7:
+			mod = mod + 1
+		elif stat == 11:
+			mod = mod + 1
+		elif stat == 15:
+			mod = mod + 1
+		elif stat == 19:
+			mod = mod + 1
+		elif stat == 23:
+			mod = mod + 1
+		elif stat == 27:
+			mod = mod + 1
+		modlist.append(mod)
+		# combines the previous two functions to print a list of stats and stat modifiers
+	@when("click", "#roll-button")
+	def roll_stats(event):
+		for i in repeat(None, 6):
+			roll_individual_stat()
+		statlist_div = web.page["statlist"]
+		statlist_div.innerText = statlist
+
+		print("Stat modifiers:")
+		for i in statlist:
+			stat_mod = round((i - 10)/2)
+			modlist.append(stat_mod)
+		modlist_div = web.page["modlist"]
+		modlist_div.innerText = modlist
+		statlist.clear()
+		modlist.clear()
+</py-script>
+</body>
+</html>
