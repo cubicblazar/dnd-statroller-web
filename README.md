@@ -1,2 +1,2 @@
 # dnd-statroller-web
-DND stat roller with a barebones HTML ui
+DND stat roller with a barebones HTML UI
